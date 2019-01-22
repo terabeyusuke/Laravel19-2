@@ -1,10 +1,13 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
-
 use Illuminate\Http\Request;
+// use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+
 use App\Profile;
+// use Carbon\Carbon;
+// use App\ProfileHistory;
 
 class ProfileController extends Controller
 {
@@ -15,43 +18,65 @@ class ProfileController extends Controller
 
   public function edit(Request $request)
   {
-      // News Modelからデータを取得する
-      $news = Profile::find($request->id);
-
-      return view('admin.profile.edit', ['news_form' => $news]);
+    $profile = Profile::find($request->id);
+    return view('admin.profile.edit', ['profile_form' => $profile]);
   }
 
 
   public function update(Request $request)
   {
-      // Validationをかける
-      $this->validate($request, Profile::$rules);
-      // News Modelからデータを取得する
-      $news = Profile::find($request->id);
-      // 送信されてきたフォームデータを格納する
-      $news_form = $request->all();
-      if (isset($news_form['image'])) {
-        $path = $request->file('image')->store('public/image');
-        $news->image_path = basename($path);
-      } else {
-          $news->image_path = null;
-      }
-      // \Debugbar::info(isset($news_form['image']));
-      unset($news_form['_token']);
-      unset($news_form['image']);
-      // 該当するデータを上書きして保存する
-      $news->fill($news_form)->save();
-      return redirect('/admin/profile/');
+    $this->validate($request, Profile::$rules);
+    // News Modelからデータを取得する
+    $profiels = Profile::find($request->id);
+    // 送信されてきたフォームデータを格納する
+    $profiels_form = $request->all();
+
+    unset($profiels_form['_token']);
+    unset($profiels_form['_remove']);
+    // 該当するデータを上書きして保存する
+    $profiels->fill($profiels_form)->save();
+
+    //18章編集履歴
+    return redirect('admin/profile');
   }
 
-  public function delete(Request $request)
-{
-    // 該当するNews Modelを取得
-    $news = Profile::find($request->id);
-    // 削除する
-    $news->delete();
-    return redirect('admin/profile/');
-}
+
+
+
+  public function create(Request $request)
+  {
+
+      // // Varidationを行う
+      $this->validate($request, Profile::$rules);
+
+      $profile = new Profile;
+      $profile_form = $request->all();
+
+
+
+      unset($profile_form['_token']);
+      // データベースに保存する
+      $profile->fill($profile_form);
+      $profile->save();
+
+      return redirect('admin/profile/create');
+    }
+
+
+
+    public function add()
+    {
+      $profiles = Profile::all();
+        return view('admin.profile.create',["profiels" => $profiles]);
+    }
+    public function delete(Request $request)
+    {
+        // 該当するNews Modelを取得
+        $profiles = Profile::find($request->id);
+        // 削除する
+        $profiles->delete();
+        return redirect('admin/profile/');
+    }
 
 
 }

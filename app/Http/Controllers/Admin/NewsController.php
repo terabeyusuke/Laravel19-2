@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\News;
 
+use App\History;
+use Carbon\Carbon;
+
 class NewsController extends Controller
 {
   public function add()
@@ -22,16 +25,18 @@ class NewsController extends Controller
       $news = new News;
       $form = $request->all();
 
-      // formに画像があれば、保存する
-      if ($form['image']) {
+      // フォームから画像が送信されてきたら、保存して、$news->image_path に画像のパスを保存する
+      if (isset($form['image'])) {
         $path = $request->file('image')->store('public/image');
         $news->image_path = basename($path);
       } else {
           $news->image_path = null;
       }
-
+      // フォームから送信されてきた_tokenを削除する
       unset($form['_token']);
+      // フォームから送信されてきたimageを削除する
       unset($form['image']);
+
       // データベースに保存する
       $news->fill($form);
       $news->save();
@@ -43,6 +48,7 @@ class NewsController extends Controller
   {
       $cond_title = $request->cond_title;
       if ($cond_title != '') {
+        //検索されたら検索結果を取得する
           $posts = News::where('title', $cond_title)->get();
       } else {
           $posts = News::all();
@@ -68,13 +74,27 @@ class NewsController extends Controller
       // News Modelからデータを取得する
       $news = News::find($request->id);
       // 送信されてきたフォームデータを格納する
-      $news_form = $request->all();
-      unset($news_form['_token']);
+      if (isset($news_form['image'])) {
+        $path = $request->file('image')->store('public/image');
+        $news->image_path = basename($path);
+      } else {
+          $news->image_path = null;
+      }
 
+
+      unset($news_form['_token']);
+      unset($news_form['_image']);
+      unset($news_form['_remove']);
       // 該当するデータを上書きして保存する
       $news->fill($news_form)->save();
 
-      return redirect('admin/news');
+      //18章編集履歴
+      $history = new History;
+      $history->news_id = $news->id;
+      $history->edited_at = Carbon::now();
+      $history->save();
+
+      return redirect('admin/news/');
   }
 
   // 以下を追記　　
@@ -86,4 +106,7 @@ class NewsController extends Controller
       $news->delete();
       return redirect('admin/news/');
   }
+
+
+
 }

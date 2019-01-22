@@ -14,7 +14,7 @@ class CreateProfilesTable extends Migration
     public function up()
     {
         Schema::create('profiles', function (Blueprint $table) {
-            $table->increments('id');
+            $table->increments('profile_id');
             $table->string('name');
             $table->string('gender');
             $table->string('hobby');
@@ -25,12 +25,12 @@ class CreateProfilesTable extends Migration
     }
 
     /**
-     * Reverse the migrations.
+     * Reverse the migrations.（訳：以降を元に戻します）
      *
      * @return void
      */
     public function down()
     {
-        Schema::dropIfExists('profile');
+        Schema::dropIfExists('profiles');
     }
 }
