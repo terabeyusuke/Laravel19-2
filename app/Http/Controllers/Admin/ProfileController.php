@@ -19,6 +19,8 @@ class ProfileController extends Controller
   public function edit(Request $request)
   {
     $profile = Profile::find($request->id);
+
+
     return view('admin.profile.edit', ['profile_form' => $profile]);
   }
 
@@ -37,8 +39,10 @@ class ProfileController extends Controller
     $profiels->fill($profiels_form)->save();
 
     //18章編集履歴
-    return redirect('admin/profile');
-  }
+    return redirect('admin/profile/create');
+
+
+    }
 
 
 
@@ -60,6 +64,8 @@ class ProfileController extends Controller
       $profile->save();
 
       return redirect('admin/profile/create');
+
+
     }
 
 
