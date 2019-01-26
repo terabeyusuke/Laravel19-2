@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\HTML;
 
 // 追記
 use App\News;
+use App\Profile;
 
 class NewsController extends Controller
 {
@@ -25,17 +26,19 @@ class NewsController extends Controller
         } else {
             $headline = null;
         }
-
-　　　　　　　　　　　　　　　　// news/index.blade.php ファイルを渡している
+        // news/index.blade.php ファイルを渡している
         // また View テンプレートに headline、 posts、 cond_title という変数を渡している
         return view('news.index', ['headline' => $headline, 'posts' => $posts, 'cond_title' => $cond_title]);
     }
 
-//↓目的　プロフィール情報を取得して　news/profile.blade.phpという
-//Viewテンプレートにプロフィール情報を渡して描画する。
 
     public function profile(Request $request)
     {
-      return View('news.profile')
+        $profile = Profile::find($request->id);
+        $news_form = $request->all();
+
+        return view('news.profile',['profile' => $profile, 'profile_form' => $profile_form]);
     }
+
+
 }
