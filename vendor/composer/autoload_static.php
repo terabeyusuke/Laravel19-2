@@ -454,7 +454,7 @@ class ComposerStaticInita02fc4f8b462d95b22b9f15eac7305a7
         'App\\Http\\Middleware\\VerifyCsrfToken' => __DIR__ . '/../..' . '/app/Http/Middleware/VerifyCsrfToken.php',
         'App\\News' => __DIR__ . '/../..' . '/app/News.php',
         'App\\Profile' => __DIR__ . '/../..' . '/app/Profile.php',
-        'App\\ProfileHistory' => __DIR__ . '/../..' . '/app/ProfileHistory.php',
+        'App\\Profilehistory' => __DIR__ . '/../..' . '/app/Profilehistory.php',
         'App\\Providers\\AppServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AppServiceProvider.php',
         'App\\Providers\\AuthServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AuthServiceProvider.php',
         'App\\Providers\\BroadcastServiceProvider' => __DIR__ . '/../..' . '/app/Providers/BroadcastServiceProvider.php',

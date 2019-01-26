@@ -77,6 +77,7 @@ class NewsController extends Controller
       $this->validate($request, News::$rules);
       // News Modelからデータを取得する
       $news = News::find($request->id);
+      $news_form = $request->all();
       // 送信されてきたフォームデータを格納する
       if (isset($news_form['image'])) {
         $path = $request->file('image')->store('public/image');
@@ -110,7 +111,4 @@ class NewsController extends Controller
       $news->delete();
       return redirect('admin/news/');
   }
-
-
-
 }

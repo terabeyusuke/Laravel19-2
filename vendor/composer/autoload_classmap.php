@@ -29,7 +29,7 @@ return array(
     'App\\Http\\Middleware\\VerifyCsrfToken' => $baseDir . '/app/Http/Middleware/VerifyCsrfToken.php',
     'App\\News' => $baseDir . '/app/News.php',
     'App\\Profile' => $baseDir . '/app/Profile.php',
-    'App\\ProfileHistory' => $baseDir . '/app/ProfileHistory.php',
+    'App\\Profilehistory' => $baseDir . '/app/Profilehistory.php',
     'App\\Providers\\AppServiceProvider' => $baseDir . '/app/Providers/AppServiceProvider.php',
     'App\\Providers\\AuthServiceProvider' => $baseDir . '/app/Providers/AuthServiceProvider.php',
     'App\\Providers\\BroadcastServiceProvider' => $baseDir . '/app/Providers/BroadcastServiceProvider.php',

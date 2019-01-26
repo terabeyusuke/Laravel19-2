@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use App\Profile;
-// use Carbon\Carbon;
-// use App\ProfileHistory;
+use Carbon\Carbon;
+use App\ProfileHistory;
 
 class ProfileController extends Controller
 {
@@ -29,16 +29,21 @@ class ProfileController extends Controller
   {
     $this->validate($request, Profile::$rules);
     // News Modelからデータを取得する
-    $profiels = Profile::find($request->id);
+    $profiles = Profile::find($request->id);
     // 送信されてきたフォームデータを格納する
-    $profiels_form = $request->all();
+    $profiles_form = $request->all();
 
-    unset($profiels_form['_token']);
-    unset($profiels_form['_remove']);
+    unset($profiles_form['_token']);
+    unset($profiles_form['_remove']);
     // 該当するデータを上書きして保存する
-    $profiels->fill($profiels_form)->save();
+    $profiles->fill($profiles_form)->save();
 
     //18章編集履歴
+    $history = new Profilehistory;
+    $history->profile_id = $profiles->id;
+    $history->edited_at = Carbon::now();
+    $history->save();
+
     return redirect('admin/profile/create');
 
 
@@ -72,16 +77,18 @@ class ProfileController extends Controller
 
     public function add()
     {
-      $profiles = Profile::all();
+        $profiles = Profile::all();
         return view('admin.profile.create',["profiels" => $profiles]);
     }
+
+
     public function delete(Request $request)
     {
         // 該当するNews Modelを取得
-        $profiles = Profile::find($request->id);
+        $profile = Profile::find($request->id);
         // 削除する
-        $profiles->delete();
-        return redirect('admin/profile/');
+        $profile->delete();
+        return redirect('admin/profile/create/');
     }
 
 
