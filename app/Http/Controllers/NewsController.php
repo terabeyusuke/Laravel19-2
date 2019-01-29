@@ -35,10 +35,10 @@ class NewsController extends Controller
     public function profile(Request $request)
     {
         $profile = Profile::find($request->id);
-        $news_form = $request->all();
+        
 
-        return view('news.profile',['profile' => $profile, 'profile_form' => $profile_form]);
+        $profiles = Profile::all();
+        return view('news.profile',["profiels" => $profiles]);
+
     }
-
-
-}
+  }
